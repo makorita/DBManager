@@ -7,6 +7,6 @@ public class Jikkou05_Charu3Load{
 		c3m.loadDB();
 		//System.out.println(c3m.getTreeStr());
 		//System.out.println(c3m.getChar3ConfigStr());
-		//c3m.writeCharu3Config();
+		c3m.writeCharu3Config(null);
 	}
 }
