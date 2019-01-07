@@ -23,6 +23,7 @@ public class NodeLoader{
 				else key=key+Modifier.DIVIDE_STR+word[i];
 			}
 			modi.put(key,word[word.length-1]);
+			networkExtend(key,word[word.length-1]);
 		}
 	}
 	
@@ -57,6 +58,7 @@ public class NodeLoader{
 			else continue;
 
 			modi.put(befCellStr,aftCellStr);
+			networkExtend(befCellStr,aftCellStr);
 		}
 	}
 	
@@ -114,6 +116,7 @@ public class NodeLoader{
 				if(valueCell.getCellType()==CellType.STRING)value=valueCell.getStringCellValue();
 				else if(valueCell.getCellType()==CellType.NUMERIC)value=String.valueOf((int)(valueCell.getNumericCellValue()));
 				modi.put(koumokuStr,value);
+				networkExtend(koumokuStr,value);
 			}else if(mode.equals("EXTEND")){
 				for(int i=0;i<koumokuList.size();i++){	//値回し
 					///フィルタ処理
@@ -127,7 +130,8 @@ public class NodeLoader{
 					if(valueCell.getCellType()==CellType.STRING)value=valueCell.getStringCellValue();
 					else if(valueCell.getCellType()==CellType.NUMERIC)value=String.valueOf((int)(valueCell.getNumericCellValue()));
 					modi.put(koumokuStr+Modifier.DIVIDE_STR+koumokuList.get(i),value);
-				}					
+					networkExtend(koumokuStr+Modifier.DIVIDE_STR+koumokuList.get(i),value);
+				}
 			}
 		}
 	}
@@ -171,6 +175,16 @@ public class NodeLoader{
 			}
 			
 			modi.put(key,cellList.get(cellList.size()-1));
+			networkExtend(key,cellList.get(cellList.size()-1));
 		}		
+	}
+	
+	public void networkExtend(String koumokuStr,String valueStr){
+		if(!valueStr.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}"))return;
+		String[] word=valueStr.split("/");
+		String maskStr=Address.getMaskStr(Integer.parseInt(word[1]));
+		modi.put(koumokuStr+Modifier.DIVIDE_STR+"ip",word[0]);
+		modi.put(koumokuStr+Modifier.DIVIDE_STR+"masklen",word[1]);
+		modi.put(koumokuStr+Modifier.DIVIDE_STR+"mask",maskStr);
 	}
 }
