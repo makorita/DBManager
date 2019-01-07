@@ -61,7 +61,8 @@ public abstract class Modifier{
 	}
 	
 	public String getChar3ConfigStr(String key){
-		key=ROOT_NAME+DIVIDE_STR+key;
+		if(key==null)key=ROOT_NAME;
+		else key=ROOT_NAME+DIVIDE_STR+key;
 		return rootNode.get(key).getChar3ConfigStr(0);
 	}
 	
