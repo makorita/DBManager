@@ -183,8 +183,10 @@ public class NodeLoader{
 		if(!valueStr.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}"))return;
 		String[] word=valueStr.split("/");
 		String maskStr=Address.getMaskStr(Integer.parseInt(word[1]));
+		String networkStr=Address.getStrExp(new Address(valueStr).getNetworkBit());
 		modi.put(koumokuStr+Modifier.DIVIDE_STR+"ip",word[0]);
 		modi.put(koumokuStr+Modifier.DIVIDE_STR+"masklen",word[1]);
 		modi.put(koumokuStr+Modifier.DIVIDE_STR+"mask",maskStr);
+		modi.put(koumokuStr+Modifier.DIVIDE_STR+"network",networkStr);
 	}
 }
