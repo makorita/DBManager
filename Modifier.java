@@ -5,7 +5,8 @@ import java.net.*;
 public abstract class Modifier{
 	public static final String DIVIDE_STR="_";
 	public static String DB_DIR;
-	public static final String DEFAULT_DB="デフォルトDB";
+	protected dbPath;
+	public static final String DEFAULT_DB="DefaultDB";
 	public static final String ROOT_NAME="myData";
 
 	private LinkedList<String> targetList;	//成形対象
