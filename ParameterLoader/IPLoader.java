@@ -14,8 +14,9 @@ public class IPLoader{
 		File rootDir=new File(srcDir);
 		recursiveCheck(rootDir);
 		for(File curFile:configList){
+			//if(!curFile.getName().equals("EJNRYPFW01_act_20161020.txt"))continue;
 			loadIP(curFile);
-			break;
+			//break;
 		}
 	}
 
@@ -35,6 +36,8 @@ public class IPLoader{
 			String i_f=null;
 			while ((line = br.readLine()) != null) {
 				//System.out.println(line);
+				//if(line.matches(".*\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}.*"))System.out.println(line);;
+				
 				if(line.matches("hostname .*")){
 					hostname=line;
 					hostname=hostname.replace("hostname ","");
@@ -47,27 +50,36 @@ public class IPLoader{
 					if(i_f.matches("GigabitEthernet.*"))i_f=i_f.replace("GigabitEthernet","Gi");
 				}
 				if(i_f==null)continue;
-				if(line.matches(" ip address .*")){
-					String ip=line;
-					ip=ip.replace(" ip address ","");
-					String[] word=ip.split(" ");
-					String address=word[0];
-					String mask=word[1];
-					String explain=address+"/"+Address.getMaskLength(mask)+"\n";
+				if(line.matches(" ip address \\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3} \\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3} standby .*")){
+					String[] word=line.split(" ");
+					String primaryIP=word[3];
+					String mask=word[4];
+					String secondaryIP=word[6];
+					String primaryExplain=primaryIP+"/"+Address.getMaskLength(mask)+"\n";
+					primaryExplain+=hostname+":primary "+i_f+"\n";
+					String secondaryExplain=secondaryIP+"/"+Address.getMaskLength(mask)+"\n";
+					secondaryExplain+=hostname+":secondary "+i_f+"\n";
+					ipm.addIP(primaryIP,primaryExplain);
+					ipm.addIP(secondaryIP,secondaryExplain);
+				}else if(line.matches(" ip address \\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3} .*")){
+					String[] word=line.split(" ");
+					String address=word[3];
+					String mask=word[4];
+					String explain=null;
+					if(line.matches(".* secondary"))explain=address+"/"+Address.getMaskLength(mask)+":secondary\n";
+					else explain=address+"/"+Address.getMaskLength(mask)+"\n";
 					explain+=hostname+" "+i_f+"\n";
 					ipm.addIP(address,explain);
-				}
-				/*
-				if(line.matches(" standby \\d+ ip .*")){
+				}else if(line.matches(" standby \\d+ ip .*")){
 					String vip=line;
 					String[] word=vip.split(" ");
 					//System.out.println(word[2]);
 					//System.out.println(word[4]);
-					ipm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_vip_"+word[4]+"_address",word[4]);
-					ipm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_vip_"+word[4]+"_hsrpGrp",word[2]);
-					
+					String address=word[4];
+					String explain=address+"\n";
+					explain+=hostname+" "+i_f+"_vip\n";
+					ipm.addIP(address,explain);
 				}
-				*/
 			}
 			br.close();
 			
