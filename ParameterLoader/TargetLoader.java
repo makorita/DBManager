@@ -46,7 +46,7 @@ public class TargetLoader{
 				if(!blankSkip)targetList.add("");
 				continue;
 			}
-			if(cell.getStringCellValue().matches(";.*"))continue;
+			if(cell.getStringCellValue().matches(";;.*"))continue;
 			
 			targetList.add(cell.getStringCellValue());
 		}

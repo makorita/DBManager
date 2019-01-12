@@ -4,9 +4,9 @@ import java.net.*;
 
 public abstract class Modifier{
 	public static final String DIVIDE_STR="_";
-	public static String DB_DIR;
-	protected dbPath;
-	public static final String DEFAULT_DB="DefaultDB";
+	private static String DB_DIR;
+	private String dbPath;
+	private static final String DEFAULT_DB="DefaultDB";
 	public static final String ROOT_NAME="myData";
 
 	private LinkedList<String> targetList;	//ê¨å`ëŒè€
@@ -16,6 +16,14 @@ public abstract class Modifier{
 		rootNode=new Node(ROOT_NAME);
 		DB_DIR=getSelfPath()+"output/";
 		//System.out.println(DB_DIR);
+	}
+
+	public String getDbPath(){
+		return dbPath;
+	}
+	
+	public void setDbPath(String dbPath){
+		this.dbPath=dbPath;
 	}
 
 	public LinkedList<String> getTargetList(){
@@ -115,7 +123,7 @@ public abstract class Modifier{
 		saveDB(DEFAULT_DB);
 	}
 	
-	public String getSelfPath(){
+	private String getSelfPath(){
 		String returnStr=this.getClass().getResource("Modifier.class").getPath().replaceAll("\\+", "%2b");
 		try{
 			returnStr=URLDecoder.decode(returnStr, "UTF-8");
