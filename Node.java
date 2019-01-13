@@ -91,6 +91,7 @@ public class Node implements Serializable{
 	}
 
 	public void put(String key,String valueStr){
+		//System.out.println("debug:"+key+","+valueStr);
 		String[] word=key.split(Modifier.DIVIDE_STR);
 		if(!word[0].equals(getName()))return;
 		if(word.length==1){	//ƒŠ[ƒt‚Ìê‡

@@ -30,9 +30,10 @@ public class Jikkou04_LoadTabList2DefDB{
 		//srcPath,sheetNameÅÀtm
 		ReplaceModifier tm=new ReplaceModifier();
 		{
-			if(tm.existsDB(Modifier.DEFAULT_DB))tm.loadDB();
+			tm.loadDB();
 			NodeLoader nl=new NodeLoader(tm);
 			nl.loadTabList(clipList);
+			//System.out.println(tm.getTreeStr());
 			tm.saveDB();
 			System.out.println(tm.getTreeStr());
 		}

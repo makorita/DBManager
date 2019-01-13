@@ -7,7 +7,7 @@ public abstract class Modifier{
 	private static String DB_DIR;
 	private String dbPath;
 	private static final String DEFAULT_DB="DefaultDB";
-	public static final String ROOT_NAME="myData";
+	public static final String ROOT_NAME="rootNode";
 
 	private LinkedList<String> targetList;	//成形対象
 	private Node rootNode;	//パラメータ
@@ -52,6 +52,7 @@ public abstract class Modifier{
 	public void put(String key,String value){
 		key=ROOT_NAME+DIVIDE_STR+key;
 		rootNode.put(key,value);
+		System.out.println(key+","+value);
 	}
 	
 	public void remove(String key){

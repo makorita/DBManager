@@ -2,28 +2,26 @@ import java.io.*;
 import java.util.*;
 
 public class PrefixModifier extends Modifier{
-	private static final String ModStrDBKey="prefix"+Modifier.DIVIDE_STR+"modifyStr";
+	private static final String PREFIX_DB_PATH="prefix";
 	private static final String PREFIX_DBNAME="prefixDB";
-	private String modifyStr;
 	
 	public PrefixModifier(){
+		setDbPath(PREFIX_DB_PATH);
 	}
 	
 	public String getModifyStr(){
-		return modifyStr;
+		return getValue(getDbPath()+Modifier.DIVIDE_STR+"modifyStr");
 	}
 	
 	public void setModifyStr(String modifyStr){
-		this.modifyStr=modifyStr;
-		put(ModStrDBKey,getModifyStr());
+		put(getDbPath()+Modifier.DIVIDE_STR+"modifyStr",modifyStr);
 	}
 	
 	public void doAfterLoad(){
-		if(existsKey(ModStrDBKey))modifyStr=getValue(ModStrDBKey);	//set‚ðŽg‚¤‚ÆDB˜AŒg‚³‚ê‚é
 	}
 	
 	public void loadDB(){
-		if(existsDB(PREFIX_DBNAME))loadDB(PREFIX_DBNAME);
+		loadDB(PREFIX_DBNAME);
 	}
 	
 	public void saveDB(){

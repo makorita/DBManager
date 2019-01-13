@@ -22,8 +22,10 @@ public class NodeLoader{
 				if(i==0)key=word[0];
 				else key=key+Modifier.DIVIDE_STR+word[i];
 			}
+			//System.out.println(key+","+word[word.length-1]);
 			modi.put(key,word[word.length-1]);
 			networkExtend(key,word[word.length-1]);
+			//System.out.println(modi.getTreeStr());
 		}
 	}
 	
