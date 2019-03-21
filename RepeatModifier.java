@@ -8,7 +8,6 @@ public class RepeatModifier extends Modifier{
 	private TreeMap<String,RepeatData> repeatMap;
 	
 	public RepeatModifier(){
-		setDbPath(REPEAT_PATH);
 		globalRepeatNum=1;
 		repeatMap=new TreeMap<String,RepeatData>();
 	}
@@ -19,38 +18,38 @@ public class RepeatModifier extends Modifier{
 	
 	public void setGlobalRepeatNum(int globalRepeatNum){
 		this.globalRepeatNum=globalRepeatNum;
-		put(getDbPath()+Modifier.DIVIDE_STR+"globalRepeatNum",String.valueOf(globalRepeatNum));
+		put(REPEAT_PATH+Modifier.DIVIDE_STR+"globalRepeatNum",String.valueOf(globalRepeatNum));
 	}
 	
 	public void clearRepeatMap(){
 		repeatMap.clear();
-		clear(getDbPath());
+		clear(REPEAT_PATH);
 	}
 
 	public void addRepeatData(RepeatData curRepeat){
 		repeatMap.put(curRepeat.getReplaceStr(),curRepeat);
 		//DB連携
 		if(curRepeat.getType().equals("NUMERIC")){
-			put(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"startValue",String.valueOf(((RepeatNumericData)curRepeat).getStartValue()));
-			put(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"maxValue",String.valueOf(((RepeatNumericData)curRepeat).getMaxValue()));
-			put(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"delta",String.valueOf(((RepeatNumericData)curRepeat).getDelta()));
-			put(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"zeroPad",String.valueOf(((RepeatNumericData)curRepeat).getZeroPad()));
-			put(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"type","NUMERIC");
+			put(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"startValue",String.valueOf(((RepeatNumericData)curRepeat).getStartValue()));
+			put(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"maxValue",String.valueOf(((RepeatNumericData)curRepeat).getMaxValue()));
+			put(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"delta",String.valueOf(((RepeatNumericData)curRepeat).getDelta()));
+			put(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"zeroPad",String.valueOf(((RepeatNumericData)curRepeat).getZeroPad()));
+			put(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"type","NUMERIC");
 		}else if(curRepeat.getType().equals("LIST")){
-			if(existsKey(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()))remove(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr());
+			if(existsKey(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()))remove(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr());
 			Iterator<String> it=((RepeatListData)curRepeat).iterator();
 			int index=0;
 			while(it.hasNext()){
 				String curStr=it.next();
-				put(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"リスト"+String.format("%02d",index++),curStr);
+				put(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"リスト"+String.format("%02d",index++),curStr);
 			}
-			put(getDbPath()+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"type","LIST");
+			put(REPEAT_PATH+Modifier.DIVIDE_STR+curRepeat.getReplaceStr()+Modifier.DIVIDE_STR+"type","LIST");
 		}
 	}
 	
 	public void doAfterLoad(){
-		if(!existsKey(getDbPath()))return;
-		Iterator<Node> it=iterator(getDbPath());
+		if(!existsKey(REPEAT_PATH))return;
+		Iterator<Node> it=iterator(REPEAT_PATH);
 		while(it.hasNext()){
 			Node tmpNode=it.next();
 			if(tmpNode.getName().equals("globalRepeatNum"))globalRepeatNum=Integer.parseInt(tmpNode.getValue("globalRepeatNum"));

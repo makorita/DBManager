@@ -11,9 +11,6 @@ public class GrepModifier extends Modifier{
 		jogaiList=new LinkedList<String>();
 	}
 	
-	public void doAfterLoad(){
-	}
-	
 	public void addGrepWord(String grepStr){
 		grepList.add(grepStr);
 	}

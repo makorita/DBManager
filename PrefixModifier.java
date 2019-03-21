@@ -6,15 +6,14 @@ public class PrefixModifier extends Modifier{
 	private static final String PREFIX_DBNAME="prefixDB";
 	
 	public PrefixModifier(){
-		setDbPath(PREFIX_DB_PATH);
 	}
 	
 	public String getModifyStr(){
-		return getValue(getDbPath()+Modifier.DIVIDE_STR+"modifyStr");
+		return getValue(PREFIX_DB_PATH+DBManager.DIVIDE_STR+"modifyStr");
 	}
 	
 	public void setModifyStr(String modifyStr){
-		put(getDbPath()+Modifier.DIVIDE_STR+"modifyStr",modifyStr);
+		put(PREFIX_DB_PATH+DBManager.DIVIDE_STR+"modifyStr",modifyStr);
 	}
 	
 	public void doAfterLoad(){
