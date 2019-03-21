@@ -3,15 +3,15 @@ import java.util.*;
 
 public class CiscoConfigLoader{
 	public static final String DBKEY="ciscoConfig";
-	private Modifier modi;
+	private DBManager dbm;
 	private LinkedList<File> configList;
 	private boolean detailFlag;
 	private boolean ifFlag;
 	private boolean routingFlag;
 	private boolean aclFlag;
 	
-	public CiscoConfigLoader(Modifier modi){
-		this.modi=modi;
+	public CiscoConfigLoader(DBManager dbm){
+		this.dbm=dbm;
 		configList=new LinkedList<File>();
 		detailFlag=true;
 		ifFlag=true;
@@ -23,6 +23,7 @@ public class CiscoConfigLoader{
 		File rootDir=new File(srcDir);
 		recursiveCheck(rootDir);
 		for(File curFile:configList){
+			System.out.println(curFile.getName());
 			checkConfig(curFile);
 			//break;
 		}
@@ -67,33 +68,34 @@ public class CiscoConfigLoader{
 						String shortName=null;
 						if(i_f.matches("FastEthernet.*"))shortName=i_f.replace("FastEthernet","Fa");
 						if(i_f.matches("GigabitEthernet.*"))shortName=i_f.replace("GigabitEthernet","Gi");
-						modi.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_name",i_f);
-						modi.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_name",i_f);
-						if(shortName!=null)modi.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_shortName",shortName);
+						dbm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_name",i_f);
+						dbm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_name",i_f);
+						if(shortName!=null)dbm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_shortName",shortName);
 					}
 					if(i_f==null)continue;
-					if(line.matches(" ip address .*")){
+					if(line.matches(" ip address .*") && !line.equals(" ip address negotiated")){
+						//System.out.println(line);
 						String ip=line;
 						ip=ip.replace(" ip address ","");
 						String[] word=ip.split(" ");
 						String address=word[0];
 						String mask=word[1];
-						modi.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_ip_address",address);
-						modi.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_ip_mask",mask);
+						dbm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_ip_address",address);
+						dbm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_ip_mask",mask);
 					}
 					if(line.matches(" standby \\d+ ip .*")){
 						String vip=line;
 						String[] word=vip.split(" ");
 						//System.out.println(word[2]);
 						//System.out.println(word[4]);
-						modi.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_vip_"+word[4]+"_address",word[4]);
-						modi.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_vip_"+word[4]+"_hsrpGrp",word[2]);
+						dbm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_vip_"+word[4]+"_address",word[4]);
+						dbm.put(DBKEY+"_"+hostname+"_interface_"+i_f+"_vip_"+word[4]+"_hsrpGrp",word[2]);
 						
 					}
 				}
 				if(routingFlag){
 					if(line.matches("ip route .*")){
-						modi.put(DBKEY+"_"+hostname+"_routing_staticRoute_"+line,line);
+						dbm.put(DBKEY+"_"+hostname+"_routing_staticRoute_"+line,line);
 					}
 				}
 				if(aclFlag){
@@ -122,7 +124,7 @@ public class CiscoConfigLoader{
 								if(valueStr==null)valueStr=curStr+"\n";
 								else valueStr+=curStr+"\n";
 							}
-							modi.put(DBKEY+"_"+hostname+"_acl_acl"+key,valueStr);
+							dbm.put(DBKEY+"_"+hostname+"_acl_acl"+key,valueStr);
 						}
 					}
 				}

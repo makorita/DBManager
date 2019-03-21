@@ -34,7 +34,7 @@ public class DBManager{
 	public void put(String key,String value){
 		key=ROOT_NAME+DIVIDE_STR+key;
 		rootNode.put(key,value);
-		System.out.println(key+","+value);
+		//System.out.println(key+","+value);
 	}
 	
 	public void remove(String key){

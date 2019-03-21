@@ -1,0 +1,2 @@
+;= DBƒI[ƒvƒ“
+opendb=java Jikkou01_OpenDB $*
