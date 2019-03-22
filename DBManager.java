@@ -52,6 +52,12 @@ public class DBManager{
 		return rootNode.getTreeStr(null);
 	}
 	
+	public String getTreeStr(String key){
+		if(key==null)key=ROOT_NAME;
+		else key=ROOT_NAME+DIVIDE_STR+key;
+		return rootNode.getTreeStr(key);
+	}
+	
 	public boolean existsDB(String dbName){
 		File dbFile=new File(DB_DIR+dbName+".bin");
 		return dbFile.exists();
