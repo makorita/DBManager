@@ -1,2 +1,3 @@
 ;= DBÉIÅ[ÉvÉì
 opendb=java Jikkou01_OpenDB $*
+showdb=java -cp "./;../" Jikkou02_ShowDB $*

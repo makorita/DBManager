@@ -53,9 +53,14 @@ public class DBManager{
 	}
 	
 	public String getTreeStr(String key){
-		if(key==null)key=ROOT_NAME;
-		else key=ROOT_NAME+DIVIDE_STR+key;
-		return rootNode.getTreeStr(key);
+		Node tmpNode=null;
+		if(key==null)tmpNode=rootNode;
+		else{
+			key=ROOT_NAME+DIVIDE_STR+key;
+			tmpNode=rootNode.get(key);
+		}
+		
+		return tmpNode.getTreeStr(null);
 	}
 	
 	public boolean existsDB(String dbName){
