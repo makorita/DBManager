@@ -1,0 +1,3 @@
+opendb	コマンドオープン
+showdb [rootPath]	rootPathからのDBツリー一覧。引数無しはDB全体。
+showkey	-rp 指定ルートパスの子キーを表示 -hc 指定の子キーを持つノードを表示 -nhc 指定の子キーを持たないノードを表示 

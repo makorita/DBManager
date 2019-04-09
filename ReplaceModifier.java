@@ -25,7 +25,7 @@ public class ReplaceModifier extends Modifier{
 	}
 	
 	public void diamondReplace(){
-		LinkedList<String> aftList=new LinkedList<String>();	//編集＆戻り用リスト
+		LinkedList<String> aftList=new LinkedList<String>();
 		Pattern p = Pattern.compile("<.+?>");
 		for(String curStr:getTargetList()){
 			Matcher m = p.matcher(curStr);
@@ -46,7 +46,7 @@ public class ReplaceModifier extends Modifier{
 	}
 	
 	public void specifyReplace(LinkedList<String> specifyList){
-		LinkedList<String> aftList=new LinkedList<String>();	//編集＆戻り用リスト
+		LinkedList<String> aftList=new LinkedList<String>();
 		for(String curStr:getTargetList()){
 			for(String befStr:specifyList){
 				if(!existsKey(befStr))continue;

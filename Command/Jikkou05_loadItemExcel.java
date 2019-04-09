@@ -1,21 +1,21 @@
 import java.io.*;
 import java.util.*;
 
-public class Jikkou02_ShowDB{
+public class Jikkou05_loadItemExcel{
 	public static void main(String args[]) throws IOException,FileNotFoundException{
-		String rootPath=null;
-		if(args.length>0)rootPath=args[0];
+		String srcFile=args[0];
+		String sheetName=args[1];
 		
 		BufferedReader br = new BufferedReader(new FileReader("env.txt"));
 		String dbName=br.readLine();
+		//System.out.println(dbName);
 		dbName=dbName.replace("dbName:","");
 		br.close();
 		
 		DBManager dbm=new DBManager();
-		dbm.loadDB(dbName);
-		//System.out.println(dbm.getTreeStr());
-		System.out.println(dbm.getTreeStr(rootPath));
-		//System.out.println(rootPath);
-		
+		if(dbm.existsDB(dbName))dbm.loadDB(dbName);
+		NodeLoader nl=new NodeLoader(dbm);
+		nl.loadItemExcel(srcFile,sheetName);
+		dbm.saveDB(dbName);
 	}
 }
