@@ -16,9 +16,6 @@ public class PrefixModifier extends Modifier{
 		put(PREFIX_DB_PATH+DBManager.DIVIDE_STR+"modifyStr",modifyStr);
 	}
 	
-	public void doAfterLoad(){
-	}
-	
 	public void loadDB(){
 		loadDB(PREFIX_DBNAME);
 	}
@@ -30,19 +27,17 @@ public class PrefixModifier extends Modifier{
 	public void addPrefix(){
 		LinkedList<String> aftList=new LinkedList<String>();
 		for(String curStr:getTargetList()){
-			if(curStr.matches(getModifyStr()+".*"))curStr=curStr.replaceFirst(getModifyStr(),"");
-			else curStr=getModifyStr()+curStr;
+			curStr=getModifyStr()+curStr;
 			aftList.add(curStr);
 		}
 		
 		setTargetList(aftList);
 	}
 	
-	public void addSuffix(){
+	public void delPrefix(){
 		LinkedList<String> aftList=new LinkedList<String>();
 		for(String curStr:getTargetList()){
-			if(curStr.matches(".*"+getModifyStr()))curStr=curStr.replaceFirst(getModifyStr()+"$","");
-			else curStr=curStr+getModifyStr();
+			curStr=curStr.replaceFirst(getModifyStr(),"");
 			aftList.add(curStr);
 		}
 		

@@ -4,11 +4,8 @@ import java.util.regex.*;
 import java.awt.*;
 import java.awt.datatransfer.*;
 
-public class Jikkou03_PrefixReplace{
+public class Jikkou03_PrefixAdd{
 	public static void main(String args[]){
-		boolean suffixFlag=false;
-		if(args.length==1 && args[0].equals("suffix"))suffixFlag=true;
-		
 		///クリップボードの読み込み
 		///クリップボード⇒clibList,clipboard
 		LinkedList<String> clipList=new LinkedList<String>();
@@ -36,15 +33,7 @@ public class Jikkou03_PrefixReplace{
 			pm.setTargetList(clipList);
 			
 			pm.loadDB();
-			if(suffixFlag)pm.addSuffix();
-			else pm.addPrefix();
-			
-			/*
-			LinkedList<String> tmpList=pm.getTargetList();
-			for(String tmpStr:tmpList){
-				System.out.println(tmpStr);
-			}
-			*/
+			pm.addPrefix();
 		}
 		
 		///クリップボードのセット

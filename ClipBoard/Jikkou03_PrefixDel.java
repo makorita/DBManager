@@ -1,9 +1,10 @@
 import java.io.*;
 import java.util.*;
+import java.util.regex.*;
 import java.awt.*;
 import java.awt.datatransfer.*;
 
-public class Jikkou04_LoadTabList2DefDB{
+public class Jikkou03_PrefixDel{
 	public static void main(String args[]){
 		///クリップボードの読み込み
 		///クリップボード⇒clibList,clipboard
@@ -15,7 +16,6 @@ public class Jikkou04_LoadTabList2DefDB{
 				String clipBoardStr = (String)object.getTransferData(DataFlavor.stringFlavor);
 				String[] word=clipBoardStr.split("\n");
 				for(String curStr:word){
-					//System.out.println(curStr);
 					clipList.add(curStr);
 				}
 				
@@ -26,16 +26,27 @@ public class Jikkou04_LoadTabList2DefDB{
 			}
 		}
 		
-		//ReplaceModifierのセット
-		//srcPath,sheetName⇒tm
-		ReplaceModifier tm=new ReplaceModifier();
+		///データマネージャー生成。パラメータワークブック読み込み
+		///clipList⇒dm
+		PrefixModifier pm=new PrefixModifier();
 		{
-			tm.loadDB();
-			NodeLoader nl=new NodeLoader(tm);
-			nl.loadTabList(clipList);
-			//System.out.println(tm.getTreeStr());
-			tm.saveDB();
-			System.out.println(tm.getTreeStr());
+			pm.setTargetList(clipList);
+			
+			pm.loadDB();
+			pm.delPrefix();
+		}
+		
+		///クリップボードのセット
+		///clipBoardStr,clipboard⇒クリップボード
+		{
+			String clipBoardStr=null;
+			LinkedList<String> tagetList=pm.getTargetList();
+			for(String curStr:tagetList){
+				if(clipBoardStr==null)clipBoardStr=curStr+"\n";
+				else clipBoardStr+=curStr+"\n";
+			}
+			StringSelection selection = new StringSelection(clipBoardStr);
+			clipboard.setContents(selection, null);
 		}
 	}
 }
