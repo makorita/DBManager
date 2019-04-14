@@ -33,6 +33,7 @@ public class GrepModifier extends Modifier{
 	}
 	
 	public void matchGrep(){
+		System.out.println("debug");
 		LinkedList<String> aftList=new LinkedList<String>();
 		for(String curStr:getTargetList()){
 			for(String curGrepStr:grepList){

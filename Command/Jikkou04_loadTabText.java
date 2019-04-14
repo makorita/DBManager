@@ -1,10 +1,9 @@
 import java.io.*;
 import java.util.*;
 
-public class Jikkou05_loadItemExcel{
+public class Jikkou04_loadTabText{
 	public static void main(String args[]) throws IOException,FileNotFoundException{
 		String srcFile=args[0];
-		String sheetName=args[1];
 		
 		//dbNameéÊìæ
 		String dbName=null;
@@ -19,10 +18,23 @@ public class Jikkou05_loadItemExcel{
 			br.close();
 		}
 		
+		//É\Å[ÉXì«Ç›çûÇ›
+		LinkedList<String> srcList=new LinkedList<String>();
+		{
+			BufferedReader br = new BufferedReader(new FileReader(srcFile));
+			String line;
+			LinkedList<String> envList=new LinkedList<String>();
+			while ((line = br.readLine()) != null) {
+	//			System.out.println(line);
+				srcList.add(line);
+			}
+			br.close();
+		}
+		
 		DBManager dbm=new DBManager();
 		if(dbm.existsDB(dbName))dbm.loadDB(dbName);
 		NodeLoader nl=new NodeLoader(dbm);
-		nl.loadItemExcel(srcFile,sheetName);
+		nl.loadTabList(srcList);
 		dbm.saveDB(dbName);
 	}
 }

@@ -3,18 +3,25 @@ import java.util.*;
 
 public class Jikkou02_ShowDB{
 	public static void main(String args[]) throws IOException,FileNotFoundException{
-		String rootPath=null;
-		if(args.length>0)rootPath=args[0];
-		
+		String currentPath="_";
+		String dbName=null;
 		BufferedReader br = new BufferedReader(new FileReader("env.txt"));
-		String dbName=br.readLine();
-		dbName=dbName.replace("dbName:","");
+		String line;
+		while ((line = br.readLine()) != null) {
+//			System.out.println(line);
+			if(line.matches("currentPath:.*"))currentPath=line.replace("currentPath:","");
+			if(line.matches("dbName:.*"))dbName=line.replace("dbName:","");
+		}
 		br.close();
 		
+		//currentPathÇÃêÆå`
+		if(currentPath.equals("_"))currentPath=null;
+		else currentPath=currentPath.replaceFirst("_","");
+
 		DBManager dbm=new DBManager();
 		dbm.loadDB(dbName);
 		//System.out.println(dbm.getTreeStr());
-		System.out.println(dbm.getTreeStr(rootPath));
+		System.out.println(dbm.getTreeStr(currentPath));
 		//System.out.println(rootPath);
 		
 	}

@@ -1,3 +1,5 @@
-opendb	コマンドオープン
-showdb [rootPath]	rootPathからのDBツリー一覧。引数無しはDB全体。
-showkey	-rp 指定ルートパスの子キーを表示 -hc 指定の子キーを持つノードを表示 -nhc 指定の子キーを持たないノードを表示 
+find "検索文字列"	DOS版のgrep。-Vオプションで指定文字を含まない行を表示
+
+opendb				DBオープン
+cdb [path]			Pathを移動。..で1つ上に移動。
+showdb 				currentPathからのDBツリー一覧

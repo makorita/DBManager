@@ -1,5 +1,6 @@
 ;= DBÉIÅ[ÉvÉì
 opendb=java Jikkou01_OpenDB $*
+cdb=java Jikkou01_cdb $*
 showdb=java -cp "./;../" Jikkou02_ShowDB $*
 showkey=java -cp "./;../" Jikkou03_ShowKey $*
 loadtabex=java -cp "./;../;../ParameterLoader;../lib/*" Jikkou04_loadTabExcel $*
