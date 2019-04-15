@@ -7,9 +7,6 @@ public class ReplaceModifier extends Modifier{
 		
 	}
 
-	public void doAfterLoad(){
-	}
-	
 	public void standardReplace(){
 		LinkedList<String> aftList=new LinkedList<String>();
 		for(String curStr:getTargetList()){
@@ -55,6 +52,41 @@ public class ReplaceModifier extends Modifier{
 			}
 			
 			aftList.add(curStr);
+		}
+		
+		setTargetList(aftList);
+	}
+	
+	public void repeatReplace(){
+		LinkedList<String> aftList=new LinkedList<String>();
+		String mode="NORMAL";
+		String pathStr=null;
+		LinkedList<String> partialList=null;
+		for(String curStr:getTargetList()){
+			//System.out.println(mode+","+curStr);
+			
+			if(mode.equals("NORMAL") && curStr.matches("<while:.*>")){
+				pathStr=curStr;
+				pathStr=pathStr.replace("<while:","");
+				pathStr=pathStr.replace(">","");
+				partialList=new LinkedList<String>();
+				
+				mode="LOOP";
+			}else if(mode.equals("NORMAL")){
+				aftList.add(curStr);
+			}else if(mode.equals("LOOP") && curStr.matches("<while:end>")){
+				Iterator<Node> it=iterator(pathStr);
+				while(it.hasNext()){
+					Node curNode=it.next();
+					for(String curPartialStr:partialList){
+						curPartialStr=curPartialStr.replaceAll("#KEY",curNode.getValue());
+						aftList.add(curPartialStr);
+					}
+				}
+				mode="NORMAL";
+			}else if(mode.equals("LOOP")){
+				partialList.add(curStr);
+			}
 		}
 		
 		setTargetList(aftList);
