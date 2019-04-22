@@ -9,7 +9,7 @@ import org.apache.poi.openxml4j.exceptions.*;
 
 public class Jikkou01_StandardReplace{
 	public static void main(String args[]){
-		String srcPath="D:/‹Î‘ÓEŒğ’Ê”ï/TaskChute1.xls";
+		String srcPath="F:/document/TaskChute1.xls";
 		String sheetName="’uŠ·";
 		
 		LinkedList<String> clipList=new LinkedList<String>();
