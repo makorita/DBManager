@@ -9,6 +9,7 @@ public class CiscoConfigLoader{
 	private boolean ifFlag;
 	private boolean routingFlag;
 	private boolean aclFlag;
+	private boolean serialFlag;
 	
 	public CiscoConfigLoader(DBManager dbm){
 		this.dbm=dbm;
@@ -17,6 +18,7 @@ public class CiscoConfigLoader{
 		ifFlag=true;
 		routingFlag=true;
 		aclFlag=true;
+		serialFlag=true;
 	}
 	
 	public void loadRecursive(String srcDir){
@@ -46,21 +48,31 @@ public class CiscoConfigLoader{
 		this.aclFlag=aclFlag;
 	}
 	
+	public void setSerialFlag(boolean serialFlag){
+		this.serialFlag=serialFlag;
+	}
+	
 	private void checkConfig(File curFile){
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(curFile));
 			String line=null;
 			String hostname=null;
-			String i_f=null;
-			TreeMap<String,LinkedList<String>> aclMap=null;
-			boolean aclMode=false;
-			while ((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null) {	//hostname�̎擾
 				//System.out.println(line);
 				if(line.matches("hostname .*")){
 					hostname=line;
 					hostname=hostname.replace("hostname ","");
+					break;
 				}
-				if(hostname==null)continue;
+			}
+			
+			br = new BufferedReader(new FileReader(curFile));
+			String i_f=null;
+			TreeMap<String,LinkedList<String>> aclMap=null;
+			boolean aclMode=false;
+			String stackName=null;
+			while ((line = br.readLine()) != null) {
+				//System.out.println(line);
 				if(ifFlag){
 					if(line.matches("interface .*")){
 						i_f=line;
@@ -126,6 +138,33 @@ public class CiscoConfigLoader{
 							}
 							dbm.put(DBKEY+"_"+hostname+"_acl_acl"+key,valueStr);
 						}
+					}
+				}
+				if(serialFlag){
+					if(line.matches("System serial number.*")){
+						String[] word=line.split(": ");
+						if(stackName==null)dbm.put(DBKEY+"_"+hostname+"_System_SerialNumber",word[1]);
+						else dbm.put(DBKEY+"_"+hostname+"_System#"+stackName+"_SerialNumber",word[1]);
+						stackName=null;
+					}else if(line.matches("Motherboard serial number.*")){
+						String[] word=line.split(": ");
+						if(stackName==null)dbm.put(DBKEY+"_"+hostname+"_Motherboard_SerialNumber",word[1]);
+						else dbm.put(DBKEY+"_"+hostname+"_Motherboard#"+stackName+"_SerialNumber",word[1]);
+					}else if(line.matches("Daughterboard serial number.*")){
+						String[] word=line.split(": ");
+						if(stackName==null)dbm.put(DBKEY+"_"+hostname+"_Daughterboard_SerialNumber",word[1]);
+						else dbm.put(DBKEY+"_"+hostname+"_Daughterboard#"+stackName+"_SerialNumber",word[1]);
+					}else if(line.matches("Switch \\d+")){
+						stackName=line;
+						stackName=stackName.replace(" ","");
+					}else if(line.matches("Processor board ID .*")){
+						String sn=line;
+						sn=sn.replace("Processor board ID ","");
+						dbm.put(DBKEY+"_"+hostname+"_System_SerialNumber",sn);
+					}else if(line.matches("Serial Number: .*")){
+						String sn=line;
+						sn=sn.replace("Serial Number: ","");
+						dbm.put(DBKEY+"_"+hostname+"_System_SerialNumber",sn);
 					}
 				}
 			}
